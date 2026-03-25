@@ -16,11 +16,12 @@ function checkAndRegisterDeliveries(): void {
   for (const thread of threads) {
     const messages = thread.getMessages();
     for (const message of messages) {
+      const from = message.getFrom();
       const subject = message.getSubject();
       const body = message.getPlainBody();
 
       try {
-        const info = parseYamatoEmail(subject, body);
+        const info = parseEmail(from, subject, body);
         if (!info) {
           console.log(`解析失敗: ${subject}`);
           continue;
