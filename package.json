@@ -1,0 +1,17 @@
+{
+  "name": "delivery-calendar-gas",
+  "version": "1.0.0",
+  "description": "Gmail監視でヤマト運輸の配送情報をGoogleカレンダーに自動登録するGAS",
+  "scripts": {
+    "push": "clasp push",
+    "pull": "clasp pull",
+    "open": "clasp open",
+    "deploy": "clasp deploy",
+    "logs": "clasp logs"
+  },
+  "devDependencies": {
+    "@types/google-apps-script": "^1.0.83",
+    "typescript": "^5.4.0",
+    "@google/clasp": "^2.4.2"
+  }
+}
