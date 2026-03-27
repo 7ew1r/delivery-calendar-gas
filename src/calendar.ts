@@ -60,6 +60,36 @@ function buildEventTitle(info: DeliveryInfo): string {
   return `${emoji} ${info.carrier}配達${sender}`;
 }
 
+/**
+ * 追跡番号（注文番号）に対応するカレンダーイベントを配達済みとしてマークする。
+ * 過去30日以内のイベントを対象に、説明欄に追跡番号を含むものを検索し
+ * タイトル先頭の📦を✅に置き換える。
+ * @returns マーク済みにしたイベント数
+ */
+function markEventAsDelivered(trackingNumber: string): number {
+  const calendar = CalendarApp.getCalendarById(CONFIG.CALENDAR_ID);
+  if (!calendar) {
+    throw new Error(`カレンダーが見つかりません: ${CONFIG.CALENDAR_ID}`);
+  }
+
+  const searchEnd = new Date();
+  const searchStart = new Date();
+  searchStart.setDate(searchStart.getDate() - 30);
+
+  const events = calendar.getEvents(searchStart, searchEnd);
+  let markedCount = 0;
+
+  for (const event of events) {
+    if (!event.getDescription().includes(trackingNumber)) continue;
+    const title = event.getTitle();
+    if (title.startsWith("✅")) continue; // 既にマーク済み
+    event.setTitle(title.replace("📦", "✅"));
+    markedCount++;
+  }
+
+  return markedCount;
+}
+
 /** イベント説明文を生成 */
 function buildEventDescription(info: DeliveryInfo): string {
   const { trackingUrl } = CARRIER_CONFIG[info.carrier] ?? { trackingUrl: () => "" };
