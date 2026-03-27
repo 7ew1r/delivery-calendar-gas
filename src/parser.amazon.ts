@@ -24,6 +24,7 @@ function parseAmazonEmail(body: string, receivedAt: Date): DeliveryInfo | null {
     trackingNumber,
     deliveryDate,
     senderName: null,
+    productName: extractAmazonProductName(body),
   };
 }
 
@@ -80,6 +81,26 @@ function extractAmazonDeliveryDate(body: string, receivedAt: Date): Date | null 
         return new Date(year, month, day);
       }
     }
+  }
+  return null;
+}
+
+/**
+ * Amazonメール本文から商品名を抽出する。
+ * 「注文内容の表示と変更」の直後に現れる最初の非空行を商品名とみなす。
+ * 末尾が「...」で切れている省略行はスキップする。
+ */
+function extractAmazonProductName(body: string): string | null {
+  const lines = body.split(/\r?\n/);
+  let foundAnchor = false;
+  for (const line of lines) {
+    const t = line.trim();
+    if (!foundAnchor) {
+      if (t === "注文内容の表示と変更") foundAnchor = true;
+      continue;
+    }
+    if (t === "" || t.endsWith("...") || t.endsWith("…") || /^https?:\/\//.test(t)) continue;
+    return t;
   }
   return null;
 }

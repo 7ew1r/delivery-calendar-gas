@@ -53,6 +53,9 @@ function isDuplicateEvent(
 /** イベントタイトルを生成 */
 function buildEventTitle(info: DeliveryInfo): string {
   const { emoji } = CARRIER_CONFIG[info.carrier] ?? { emoji: "📦" };
+  if (info.productName) {
+    return `${emoji} ${info.productName}`;
+  }
   const sender = info.senderName ? `（${info.senderName}）` : "";
   return `${emoji} ${info.carrier}配達${sender}`;
 }
