@@ -99,7 +99,7 @@ function extractAmazonProductName(body: string): string | null {
       if (t === "注文内容の表示と変更") foundAnchor = true;
       continue;
     }
-    if (t === "" || t.endsWith("...") || t.endsWith("…")) continue;
+    if (t === "" || t.endsWith("...") || t.endsWith("…") || /^https?:\/\//.test(t)) continue;
     return t;
   }
   return null;
