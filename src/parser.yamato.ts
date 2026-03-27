@@ -20,6 +20,7 @@ function parseYamatoEmail(body: string, receivedAt: Date): DeliveryInfo | null {
     trackingNumber,
     deliveryDate,
     senderName: extractSenderName(body),
+    productName: null,
   };
 }
 

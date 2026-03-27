@@ -4,6 +4,7 @@ interface DeliveryInfo {
   trackingNumber: string;
   deliveryDate: Date;
   senderName: string | null;
+  productName: string | null;
 }
 
 /**
