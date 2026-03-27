@@ -5,7 +5,7 @@ const CARRIER_CONFIG: Record<string, { emoji: string; trackingUrl: (id: string) 
   },
   "Amazon": {
     emoji: "📦",
-    trackingUrl: () => "https://www.amazon.co.jp/gp/your-account/order-history",
+    trackingUrl: (id) => `https://www.amazon.co.jp/your-orders/order-details?orderID=${id}`,
   },
 };
 
