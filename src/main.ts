@@ -3,7 +3,14 @@
  * トリガーで1時間ごとに実行する
  */
 function checkAndRegisterDeliveries(): void {
-  const threads = GmailApp.search(CONFIG.GMAIL_QUERY);
+  const threadMap = new Map<string, GoogleAppsScript.Gmail.GmailThread>();
+  for (const thread of [
+    ...GmailApp.search(CONFIG.GMAIL_QUERY_YAMATO),
+    ...GmailApp.search(CONFIG.GMAIL_QUERY_AMAZON),
+  ]) {
+    threadMap.set(thread.getId(), thread);
+  }
+  const threads = [...threadMap.values()];
   console.log(`対象メール: ${threads.length}件`);
 
   if (threads.length === 0) return;
@@ -16,11 +23,13 @@ function checkAndRegisterDeliveries(): void {
   for (const thread of threads) {
     const messages = thread.getMessages();
     for (const message of messages) {
+      const from = message.getFrom();
       const subject = message.getSubject();
       const body = message.getPlainBody();
+      const receivedAt = message.getDate();
 
       try {
-        const info = parseYamatoEmail(subject, body);
+        const info = parseEmail(from, subject, body, receivedAt);
         if (!info) {
           console.log(`解析失敗: ${subject}`);
           continue;
