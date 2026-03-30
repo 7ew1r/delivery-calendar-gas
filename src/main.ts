@@ -7,6 +7,7 @@ function checkAndRegisterDeliveries(): void {
   for (const thread of [
     ...GmailApp.search(CONFIG.GMAIL_QUERY_YAMATO),
     ...GmailApp.search(CONFIG.GMAIL_QUERY_AMAZON),
+    ...GmailApp.search(CONFIG.GMAIL_QUERY_MUJI),
   ]) {
     threadMap.set(thread.getId(), thread);
   }

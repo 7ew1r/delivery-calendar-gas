@@ -17,6 +17,9 @@ function parseEmail(from: string, subject: string, body: string, receivedAt: Dat
   if (from.includes("amazon.co.jp") || from.includes("amazon.com")) {
     return parseAmazonEmail(body, receivedAt);
   }
+  if (from.includes("muji.net")) {
+    return parseMujiEmail(body, receivedAt);
+  }
   console.log(`未対応の送信元: ${from}`);
   return null;
 }
