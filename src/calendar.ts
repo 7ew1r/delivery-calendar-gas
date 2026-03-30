@@ -9,7 +9,7 @@ const CARRIER_CONFIG: Record<string, { emoji: string; trackingUrl: (id: string) 
   },
   "無印良品": {
     emoji: "📦",
-    trackingUrl: (id) => `https://www.muji.com/jp/ja/store/netstore/mypage/order-history/detail?orderNo=${id}`,
+    trackingUrl: (_id) => `https://www.muji.com/jp/ja/store/cust/order/itemlist?web_store=my_menu_mem_list-orders`,
   },
 };
 
